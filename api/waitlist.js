@@ -4,6 +4,7 @@
 //   TELEGRAM_CHAT_ID    (your chat or channel id)
 //   ALLOWED_ORIGIN      (optional, e.g. https://thabatapp-jet.vercel.app)
 
+const db = require('../lib/database');
 const hits = new Map(); // best-effort rate limit; resets when the function cold-starts
 
 module.exports = async (req, res) => {
@@ -38,15 +39,25 @@ module.exports = async (req, res) => {
 
   const source = String(body.source || "").slice(0, 40);
   const text = `🧱 طوبة جديدة في الطابور\n@${handle}\nhttps://instagram.com/${handle}\nالمصدر: ${source || "-"}\n${new Date().toISOString()}`;
+  // Store first when a database is connected. Never claim a signup was saved if storage failed.
+  let saved = false;
+  if (db.configured()) {
+    try { await db.recordSignup(handle, body.visitor, source); saved = true; }
+    catch { return res.status(503).json({ ok: false, error: "storage_unavailable" }); }
+  }
   try {
     const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(4000),
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chat, text, disable_web_page_preview: true })
     });
-    if (!r.ok || (await r.json()).ok !== true) return res.status(502).json({ ok: false, error: "telegram_failed" });
+    if (!r.ok || (await r.json()).ok !== true) {
+      if (saved) { console.warn('Telegram notification failed; signup saved in database.'); return res.status(200).json({ ok: true }); }
+      return res.status(502).json({ ok: false, error: "telegram_failed" });
+    }
   } catch {
+    if (saved) { console.warn('Telegram unreachable; signup saved in database.'); return res.status(200).json({ ok: true }); }
     return res.status(502).json({ ok: false, error: "telegram_unreachable" });
   }
   return res.status(200).json({ ok: true });

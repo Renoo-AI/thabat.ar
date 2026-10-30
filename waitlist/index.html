@@ -197,6 +197,7 @@ dialog::backdrop{background:rgba(51,38,27,.45)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+<script src="/assets/js/visitor.js" defer></script>
 </head>
 <body>
 
@@ -467,7 +468,7 @@ async function send(handle) {
     signal: controller.signal,
     method: "POST",
     headers: { "Content-Type": "application/json", "Accept": "application/json", ...CFG.headers },
-    body: JSON.stringify({ handle, platform: "instagram", source: "waitlist", at: new Date().toISOString(), website: form.website ? form.website.value : "" })
+    body: JSON.stringify({ handle, platform: "instagram", source: "waitlist", at: new Date().toISOString(), visitor: window.thabatVisitorId || null, website: form.website ? form.website.value : "" })
   });
   if (!res.ok) throw new Error("ما قدرنا نحفظ تسجيلك. جرّب بعد شوي.");
   const result = await res.json();
