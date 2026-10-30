@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — معلومة اليوم</title>
+<meta name="description" content="معلومة واحدة هادئة كل يوم تعيد إليك عقلك.">
+<meta property="og:title" content="ثبات — معلومة اليوم">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/facts.js"></script>
+<style>
+  h1 { font-size: clamp(1.7rem, 6.6vw, 2.2rem); }
+  .body { margin-top: 12px; font-size: 1.1rem; line-height: 1.9; color: var(--ink); }
+  .pos { font-size: var(--t-small); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .wait { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: var(--t-small); color: var(--ink-soft); }
+  .wait .i { width: 20px; height: 20px; color: var(--sage-deep); }
+  .wait b { color: var(--ink); direction: ltr; unicode-bidi: isolate; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<main class="screen">
+  <header class="bar">
+    <a class="ico-btn" href="home.html" aria-label="رجوع"><i data-i="arrow" style="transform:scaleX(-1)"></i></a>
+    <span class="pos" id="pos"></span>
+  </header>
+
+  <img class="hero" id="art" src="assets/f-fox.jpg" alt="" width="900" height="900">
+
+  <h1 id="t"></h1>
+  <p class="body" id="b"></p>
+  <p class="wait"><i data-i="clock"></i><span>المعلومة القادمة بعد <b id="cd">--:--:--</b></span></p>
+
+  <div class="spacer"></div>
+  <button class="cta calm" id="ok" type="button" style="margin-top:20px"><i data-i="check"></i> <span id="okl">فهمت</span></button>
+</main>
+<script>
+// one card per day, no browsing: the day number comes from the protected clock
+const $ = (id) => document.getElementById(id);
+let c, t0, shownDay = -1;
+
+function show(cc) {
+  c = cc; t0 = performance.now();
+  const { f, n, of } = factForDay(c.days, store.get().reason);
+  if (shownDay !== c.days) {
+    const x = factText(f);
+    $("art").src = "assets/" + f.img; $("art").alt = x.alt;
+    $("t").textContent = x.t; $("b").textContent = x.b;
+    $("pos").textContent = T("معلومة {n} من {m}", { n: num(n), m: num(of) });
+    shownDay = c.days;
+  }
+  const read = store.get().learned === c.days;
+  $("okl").textContent = T(read ? "رجوع" : "فهمت");
+}
+function tick() {
+  const left = Math.max(0, c.nextIn - (performance.now() - t0));
+  $("cd").textContent = hms(left);
+  if (left <= 0) location.reload();
+}
+$("ok").addEventListener("click", () => { store.set({ learned: c.days }); location.href = "home.html"; });
+show(clock.local());
+clock.read().then(show);
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

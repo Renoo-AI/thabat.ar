@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — لحظة الرغبة</title>
+<meta name="description" content="تنفّس تسعين ثانية. الرغبة موجة وتمرّ.">
+<meta property="og:title" content="ثبات — لحظة الرغبة">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/facts.js"></script>
+<style>
+  .cue { font: 700 1.9rem/1.2 var(--font-display); text-align: center; color: var(--sage-deep); min-height: 2.4rem; margin-top: -4px; }
+  .timer { text-align: center; color: var(--ink-soft); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+  .why { text-align: center; margin-top: 12px; color: var(--ink); font-weight: 700; }
+</style>
+</head>
+<body>
+<main class="screen">
+  <header class="bar">
+    <a class="ico-btn" href="home.html" aria-label="رجوع"><i data-i="arrow" style="transform:scaleX(-1)"></i></a>
+    <button class="ico-btn" id="snd" type="button" aria-pressed="false" aria-label="تشغيل الصوت"><i data-i="sound"></i></button>
+  </header>
+
+  <img class="hero" id="art" src="assets/breath.jpg" alt="يدان من الطين تحملان كرة خضراء داخل حلقات هادئة" width="900" height="900">
+
+  <p class="cue" id="cue" aria-live="polite">شهيق…</p>
+  <p class="timer" id="t">تبقّى 90 ثانية</p>
+  <p class="why" id="why"></p>
+  <p class="small" id="inst" style="text-align:center;margin-top:4px"></p>
+
+  <div class="spacer"></div>
+  <button class="cta calm" id="done" type="button" disabled style="margin-top:20px"><i data-i="check"></i> عبرت الموجة</button>
+</main>
+<script>
+const s = store.get();
+// a different still scene each time, so the moment never feels like a repeat
+const SCENES = [
+  ["breath.jpg", T("يدان من الطين تحملان كرة خضراء داخل حلقات هادئة")],
+  ["urge-sea.jpg", T("بحر من الطين الأخضر وموجات كريمية وشمس برتقالية منخفضة")],
+  ["urge-candle.jpg", T("شمعة طينية بلهب برتقالي في طبق أخضر")],
+  ["urge-mountain.jpg", T("جبلان أخضران وشمس برتقالية تشرق خلفهما ودرب كريمي")],
+];
+const last = +(sessionStorage.getItem("thabat-scene") ?? -1);
+let pick; do { pick = Math.floor(Math.random() * SCENES.length); } while (pick === last);
+sessionStorage.setItem("thabat-scene", pick);
+const art = document.getElementById("art");
+art.src = "assets/" + SCENES[pick][0]; art.alt = SCENES[pick][1];
+document.getElementById("why").textContent = s.reason ? T("تذكّر: {r}", { r: reasonFor(s.reason) }) : "";
+document.getElementById("inst").textContent = T(INSTINCT);
+
+// sound is opt-in (browsers block autoplay anyway): a calm pad, plus a spoken guide that ducks it
+const music = new Audio("audio/calm.m4a"), voice = new Audio("audio/intro.wav");
+music.loop = true; music.volume = 0.5;
+const snd = document.getElementById("snd");
+function setSound(on) {
+  snd.setAttribute("aria-pressed", on);
+  snd.setAttribute("aria-label", T(on ? "إيقاف الصوت" : "تشغيل الصوت"));
+  snd.innerHTML = `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${ICONS[on ? "sound" : "mute"]}</svg>`;
+  if (on) {
+    music.volume = 0.18; music.play().catch(() => {});
+    voice.currentTime = 0; voice.play().catch(() => {});
+    voice.onended = () => { music.volume = 0.5; };
+  } else { music.pause(); voice.pause(); }
+}
+snd.addEventListener("click", () => setSound(snd.getAttribute("aria-pressed") !== "true"));
+addEventListener("pagehide", () => { music.pause(); voice.pause(); });
+let left = +(new URLSearchParams(location.search).get("t") || 90); // ?t=5 to test
+const t = document.getElementById("t"), cue = document.getElementById("cue"), done = document.getElementById("done");
+let tick = 0;
+const id = setInterval(() => {
+  left--; tick++;
+  const was = cue.textContent;
+  cue.textContent = (Math.floor(tick / 4) % 2 === 0) ? T("شهيق…") : T("زفير…");
+  if (cue.textContent !== was && navigator.vibrate) navigator.vibrate(30); // a light tap on each switch
+  if (left <= 0) {
+    clearInterval(id);
+    t.textContent = T("انتهت الموجة");
+    cue.textContent = T("أحسنت");
+    done.disabled = false;
+  } else t.textContent = T("تبقّى {n} ثانية", { n: left });
+}, 1000);
+done.addEventListener("click", () => {
+  store.set({ wins: store.get().wins + 1 });
+  location.href = "home.html";
+});
+</script>
+</body>
+</html>

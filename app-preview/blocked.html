@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — الباب مغلق</title>
+<meta name="description" content="تم حجب هذا الموقع أو التطبيق.">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="ثبات — الباب مغلق">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/facts.js"></script>
+<style>
+  .screen { background: #f3e2cc; }
+  h1 em { color: var(--orange-deep); }
+  .echo { margin-top: 14px; padding: 14px 16px; background: #f9efe0; border-radius: var(--r-md); display: flex; gap: 12px; align-items: center; }
+  .echo .i { color: var(--orange-deep); }
+  .echo p { font-size: var(--t-small); line-height: 1.5; color: var(--ink); }
+  .echo b { display: block; font: 700 1.05rem/1.3 var(--font-display); }
+</style>
+</head>
+<body>
+<main class="screen">
+  <header class="bar"><span class="mark" style="color:var(--orange-deep)">ثبات</span></header>
+
+  <img class="hero" src="assets/door-locked.jpg" alt="باب مغلق بقفل ذهبي" width="900" height="900" style="width:min(86%,330px)">
+
+  <h1 data-t>أغلقنا <em>الباب</em> عنك</h1>
+  <p class="lead" id="inst" style="max-width:none;font-size:1.15rem;color:var(--ink)"></p>
+  <p class="small" id="site" style="margin-top:6px">هذا الموقع محجوب.</p>
+
+  <div class="echo"><i data-i="heart"></i><p><span class="small">تذكّر سببك</span><b id="why">من أجلك</b></p></div>
+
+  <div class="spacer"></div>
+  <a class="cta calm" href="urge.html" style="margin-top:20px"><i data-i="wind"></i> تنفّس معنا ٩٠ ثانية</a>
+  <a href="home.html" class="small" style="text-align:center;padding:14px;color:var(--ink-soft)">ارجع للرئيسية</a>
+</main>
+<script>
+const s = store.get();
+document.getElementById("inst").textContent = T(INSTINCT);
+const d = new URLSearchParams(location.search).get("d");
+const a = new URLSearchParams(location.search).get("a"); // ?a=Reddit when an app was stopped instead of a site
+if (a) document.getElementById("site").textContent = T("تطبيق {a} محجوب.", { a });
+else if (d) document.getElementById("site").textContent = T("{d} محجوب.", { d });
+document.getElementById("why").textContent = reasonFor(s.reason);
+if (!sessionStorage.getItem("thabat-blocked-counted")) {
+  sessionStorage.setItem("thabat-blocked-counted", "1");
+  store.set({ blocked: s.blocked + 1 });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "about": "How Thabat decides whether an installed app is blocked. The matcher runs on the package name AND the visible app name, split into words. js/blocker.js is the reference implementation; the Android service in android/ ports the same rules.",
+  "levels": {
+    "soft": "brands + the words that are never innocent (porn, xxx, hentai…)",
+    "mid": "brands + risky words (catches renamed or sideloaded apps)",
+    "hard": "mid + a night lock on social apps, 23:00 to 05:00"
+  },
+  "porn": {
+    "brands": [
+      "pornhub", "xvideos", "xnxx", "xhamster", "redtube", "youporn", "spankbang", "onlyfans", "chaturbate",
+      "stripchat", "bongacams", "camsoda", "livejasmin", "brazzers", "eporner", "tnaflix", "beeg", 
+      "fansly", "nhentai", "hentaihaven", "hanime", "rule34", "ehentai", "tube8", "porntrex", "txxx", "fapello",
+      "coomer", "erome", "redgifs", "hqporner", "naughtyamerica", "realitykings", "bangbros", "mofos", "playboy",
+      "javhd", "missav", "fikfap", "manyvids", "pornpics", "sxyprn", "thothub", "simpcity"
+    ],
+    "core_words": ["porn", "porno", "pornstar", "xxx", "hentai", "nsfw"],
+    "risky_words": [
+      "erotic", "erotica", "camgirl", "camgirls", "sexcam",
+      "sexchat", "sexvideo", "sexvideos", "nudes", "fetish", "milf", "bdsm", "javporn", "adult18", "18plus"
+    ],
+    "prefix_words": ["porn", "hentai", "nsfw"],
+    "never_block_if_word_present": [
+      "thabat", "nofap", "fortify", "quittr", "covenanteyes", "brainbuddy", "accountability", "recovery", "quit",
+      "stop", "blocker", "block", "filter", "parental", "safesurfer", "bark"
+    ],
+    "never_block_packages": [
+      "com.android.", "com.google.", "com.samsung.", "com.sec.", "com.miui.", "com.huawei.", "com.oneplus.", "org.thabat."
+    ]
+  },
+  "social": {
+    "about": "Mainstream apps that are not porn apps but can lead to explicit content. Only locked at night on the strict level.",
+    "packages": {
+      "com.reddit.frontpage": "Reddit",
+      "com.twitter.android": "X",
+      "org.telegram.messenger": "Telegram",
+      "com.tumblr": "Tumblr",
+      "com.discord": "Discord",
+      "com.snapchat.android": "Snapchat",
+      "com.instagram.android": "Instagram",
+      "com.zhiliaoapp.musically": "TikTok",
+      "tv.twitch.android.app": "Twitch"
+    },
+    "night_from": 23,
+    "night_to": 5
+  }
+}

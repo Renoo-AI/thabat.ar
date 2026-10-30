@@ -1,0 +1,72 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — قوة الحماية</title>
+<meta name="description" content="غيّر قوة الحماية. التشديد فوري والتخفيف بعد ٢٤ ساعة.">
+<meta property="og:title" content="ثبات — الإعدادات">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="screen">
+  <header class="bar" data-langs>
+    <a class="ico-btn" href="home.html" aria-label="رجوع"><i data-i="arrow" style="transform:scaleX(-1)"></i></a>
+    <span class="mark">ثبات</span>
+  </header>
+
+  <img class="hero sm" id="art" src="assets/lv-mid.jpg" alt="" width="900" height="900">
+
+  <h1 data-t>قوة <em>الحماية</em></h1>
+
+  <form id="f">
+    <fieldset class="choices">
+      <legend class="small" style="padding:0;margin-bottom:6px">التشديد فوري. التخفيف يُطبَّق بعد ٢٤ ساعة، لتقرر وأنت هادئ.</legend>
+      <div class="choice"><input type="radio" name="l" id="l1" value="soft"><label for="l1"><i data-i="feather"></i><div><b>خفيف</b><span>المواقع والتطبيقات الإباحية المعروفة فقط</span></div></label></div>
+      <div class="choice"><input type="radio" name="l" id="l2" value="mid"><label for="l2"><i data-i="shield"></i><div><b>متوسط</b><span>المعروفة، ومعها مواقع محتواها مختلط</span></div></label></div>
+      <div class="choice"><input type="radio" name="l" id="l3" value="hard"><label for="l3"><i data-i="lock"></i><div><b>صارم</b><span>كل ما سبق، وقفل ليلي لتطبيقات التواصل من ١١ مساءً إلى ٥ صباحاً</span></div></label></div>
+    </fieldset>
+    <p class="notice" id="msg" role="status"><i data-i="clock"></i><span id="msgt">اختر القوة ثم احفظ.</span></p>
+    <div class="spacer"></div>
+    <button class="cta" type="submit" style="margin-top:20px"><i data-i="check"></i> حفظ التغيير</button>
+  </form>
+</main>
+<script>
+const ART = { soft: "lv-soft.jpg", mid: "lv-mid.jpg", hard: "lv-hard.jpg" };
+const art = document.getElementById("art");
+function show() { art.src = "assets/" + ART[document.querySelector("input[name=l]:checked").value]; }
+const s = store.get();
+const cur = (s.pending ? s.level : s.level);
+document.querySelector(`input[value="${cur}"]`).checked = true;
+if (s.pending) document.getElementById("msgt").textContent = T("سيصبح المستوى «{l}» بعد ٢٤ ساعة من طلبك.", { l: LEVELS[s.pending.level] });
+
+document.querySelectorAll("input[name=l]").forEach((r) => r.addEventListener("change", show));
+show();
+document.getElementById("f").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const next = new FormData(e.target).get("l"), now = store.get();
+  const msg = document.getElementById("msgt");
+  if (LEVEL_RANK[next] < LEVEL_RANK[now.level]) {
+    store.set({ pending: { level: next, at: Date.now() + 86400000 } });
+    msg.textContent = T("سجّلنا طلبك. ستخفّ الحماية بعد ٢٤ ساعة.");
+  } else {
+    store.set({ level: next, pending: null });
+    msg.textContent = T("تم. حمايتك أقوى الآن.");
+  }
+  setTimeout(() => (location.href = "home.html"), 1400);
+});
+</script>
+</body>
+</html>

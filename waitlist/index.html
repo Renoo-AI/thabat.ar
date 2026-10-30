@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ثبات — الطابور بدأ، احجز طوبتك</title>
+<meta name="description" content="قائمة انتظار ثبات: تطبيق يحجب المواقع والتطبيقات الإباحية ويبني معك جداراً، طوبة عن كل يوم. اكتب يوزر إنستغرام ونراسلك يوم الإطلاق.">
+<meta property="og:title" content="الطابور بدأ — احجز طوبتك في ثبات">
+<meta property="og:description" content="اكتب يوزر إنستغرام ونراسلك يوم الإطلاق. نبدأ بأندرويد.">
+<meta property="og:image" content="https://thabatapp-jet.vercel.app/assets/og/og-waitlist.jpg">
+<meta property="og:url" content="https://thabatapp-jet.vercel.app/waitlist">
+<link rel="canonical" href="https://thabatapp-jet.vercel.app/waitlist">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:site_name" content="ثبات">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/icon-180.png">
+<meta name="theme-color" content="#F4EAD5">
+<link rel="preload" href="/assets/fonts/baloo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/badeen.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="/site.webmanifest">
+<style>
+@font-face{font-family:"Badeen Display";src:url(/assets/fonts/badeen.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Baloo Bhaijaan 2";src:url(/assets/fonts/baloo.woff2) format("woff2");font-weight:400 800;font-display:swap}
+:root{
+  --paper:#F4EAD5; --paper-2:#EADCBF; --card:#FCF7EC; --sand:#E6D2A8; --sand-2:#D9C18F;
+  --ink:#33261B; --ink-2:#6B5240; --clay:#C85A2E; --clay-deep:#8A3F1F; --olive:#5E7140; --olive-deep:#3F4F2A;
+  --head:64px; --ground:13svh;
+  --display:"Badeen Display","Baloo Bhaijaan 2",sans-serif; --ui:"Baloo Bhaijaan 2",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html,body{overflow-x:clip}
+body{background:var(--paper);color:var(--ink);font:600 1.0625rem/1.65 var(--ui)}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--clay-deep);outline-offset:3px;border-radius:8px}
+.d{font-family:var(--display);font-weight:400;letter-spacing:0}
+em{font-style:normal;color:var(--clay)}
+
+/* ---------- header ---------- */
+.top{position:fixed;inset-inline:0;top:0;height:var(--head);z-index:20;display:flex;align-items:center;gap:12px;padding:0 16px;padding-top:env(safe-area-inset-top);background:var(--paper)}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex:none}
+.brand img{width:36px;height:36px;border-radius:10px}
+.brand b{font:800 1.35rem/1 var(--ui)}
+.bricks{flex:1;display:flex;gap:4px;justify-content:center;max-width:260px;margin-inline:auto}
+.bricks i{flex:1;height:12px;border-radius:3px;background:var(--paper-2);transition:background .3s}
+.bricks i.on{background:var(--clay)}
+.skip{flex:none;background:var(--ink);color:var(--card);font:800 .95rem/1 var(--ui);padding:10px 14px 12px;border-radius:999px;text-decoration:none}
+
+/* ---------- the ride: vertical scroll walks you along the queue ---------- */
+.ride{position:relative}
+.cam{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--paper)}
+.track{position:absolute;top:0;right:0;height:100%;display:flex;background:var(--paper);will-change:transform}
+/* ground is ::before so the panels paint above it without z-index (a z-index would isolate the images and break the multiply blend) */
+.track::before{content:"";position:absolute;inset-inline:0;bottom:0;height:var(--ground);background:var(--sand);border-top:3px solid var(--sand-2)}
+.panel{position:relative;flex:none;width:100vw;height:100%}
+@media (min-width:760px){.panel{width:min(52vw,720px)} .panel.wide{width:min(70vw,980px)}}
+.fig{position:absolute;bottom:calc(var(--ground) - 3svh);left:50%;transform:translateX(-50%);height:42svh;width:auto;max-width:none;mix-blend-mode:multiply;filter:brightness(1.1) contrast(1.05);pointer-events:none}
+.fig.flip{transform:translateX(-50%) scaleX(-1)}
+@media (min-width:760px){.fig{height:50svh}}
+
+/* talk bubbles */
+.talk{position:absolute;z-index:2;top:calc(var(--head) + 2.2svh);inset-inline:18px;display:flex;flex-direction:column;gap:10px;max-width:440px;margin-inline:auto}
+.fig.booth{height:44svh}
+@media (min-width:760px){.fig.booth{height:56svh}}
+@media (min-width:760px){.talk{inset-inline:40px}}
+.q,.a{border-radius:20px;padding:12px 18px 14px;opacity:0;transform:translateY(10px) scale(.97);transition:opacity .35s ease,transform .35s ease}
+.q{align-self:flex-start;background:var(--card);border:2.5px solid var(--ink);font:800 1.2rem/1.45 var(--ui);box-shadow:0 5px 0 var(--ink);max-width:88%;position:relative}
+.q::after{content:"";position:absolute;bottom:-19px;right:28px;width:24px;height:15px;background:var(--ink);clip-path:polygon(0 0,100% 0,78% 100%)}
+.a{align-self:flex-end;background:var(--olive);color:var(--card);font:600 1.05rem/1.65 var(--ui);max-width:94%;box-shadow:0 5px 0 var(--olive-deep);transition-delay:.25s}
+.a small{display:block;font:800 .82rem/1.4 var(--ui);color:#DDE3C8;margin-bottom:2px}
+.a b{font-weight:800;color:#FFE7C8}
+.panel.on .q,.panel.on .a{opacity:1;transform:none}
+.play{display:inline-flex;align-items:center;gap:8px;margin-top:10px;background:var(--card);color:var(--ink);border-radius:999px;padding:6px 16px 8px;font:800 .95rem/1.2 var(--ui);box-shadow:0 4px 0 var(--olive-deep)}
+.play svg{width:14px;height:14px;fill:currentColor}
+
+/* first panel: the title */
+.title{position:absolute;inset-inline:22px;top:calc(var(--head) + 6svh);text-align:center}
+.title .k{font:800 1rem/1.4 var(--ui);color:var(--olive);background:var(--card);display:inline-block;padding:4px 16px 6px;border-radius:999px;border:2px solid var(--paper-2)}
+.title h1{font-size:clamp(4.1rem,21vw,8.5rem);line-height:1.02;margin-top:14px}
+.title p{font-size:1.15rem;color:var(--ink-2);margin:14px auto 0;max-width:22ch}
+.late-only{display:none}
+.late .day-only{display:none} .late .late-only{display:block}
+.calm{width:96px;height:96px;margin:22px auto 0;border-radius:50%;background:var(--olive);opacity:.85;animation:breathe 10s ease-in-out infinite}
+.calm+span{display:block;margin-top:8px;font:800 1rem/1 var(--ui);color:var(--olive)}
+@keyframes breathe{0%,100%{transform:scale(.55)}50%{transform:scale(1)}}
+.cue{position:absolute;bottom:calc(var(--ground) + 4svh);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;font:800 1rem/1.2 var(--ui);color:var(--ink-2)}
+.cue svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.footprints{position:absolute;bottom:4svh;left:10%;right:10%;height:4svh;background:radial-gradient(ellipse 9px 5px at 50% 50%,rgba(255,255,255,.7) 98%,transparent) 0 0/46px 100% repeat-x;opacity:.8}
+
+/* last panel: your empty spot */
+.spot .title{top:calc(var(--head) + 3svh)}
+.spot h2{font-size:clamp(3.3rem,16vw,6.4rem);line-height:1.05}
+.spot p{font-size:1.1rem;color:var(--ink-2);margin-top:6px}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:60px;padding:0 34px 4px;margin-top:18px;border-radius:999px;background:var(--clay);color:var(--card);font:800 1.3rem/1 var(--ui);box-shadow:0 6px 0 var(--clay-deep);text-decoration:none;transition:transform .12s}
+.cta:active{transform:translateY(3px);box-shadow:0 3px 0 var(--clay-deep)}
+.spotimg{position:absolute;bottom:calc(var(--ground) - 12svh);left:50%;transform:translateX(-50%);width:min(92vw,520px);mix-blend-mode:multiply;filter:brightness(1.1) contrast(1.05);pointer-events:none}
+.you{display:none}
+.mine .spotimg{display:none}
+.mine .you{display:block}
+.youtag{position:absolute;display:none;pointer-events:none;direction:ltr;transform-origin:center;white-space:nowrap;font:800 16px/1 var(--ui);color:var(--olive-deep);transform:translate(-50%,-50%) rotate(-90deg)}
+.mine .youtag{display:block}
+.mine .spot .title p.wait,.spot .title p.got{display:none}
+.mine .spot .title p.got{display:block}
+
+/* ---------- desktop: bigger, one speaker at a time, full-width first and last screens ---------- */
+@media (min-width:900px){
+  .bricks{max-width:360px}
+  .panel{width:clamp(560px,44vw,800px)}
+  .panel:first-child,.panel:last-child{width:100vw}
+  .fig{height:50svh}
+  .fig.booth{height:54svh}
+  .talk{max-width:600px;inset-inline:48px;gap:14px}
+  .q{font-size:1.5rem;padding:14px 24px 16px;max-width:86%}
+  .a{font-size:1.25rem;padding:16px 24px 18px;max-width:100%}
+  .a small{font-size:.95rem}
+  .play{font-size:1.05rem}
+  .title .k{font-size:1.15rem}
+  .title h1{font-size:clamp(6rem,11vw,11rem)}
+  .title p{font-size:1.45rem;max-width:30ch}
+  .spot h2{font-size:clamp(5rem,9vw,8.5rem)}
+  .spot p{font-size:1.35rem}
+  .cta{min-height:68px;font-size:1.45rem;padding:0 44px 4px}
+  .spotimg{width:min(40vw,520px)}
+  .end h2{font-size:clamp(5rem,10vw,10rem)}
+  .end p{font-size:1.5rem;max-width:30ch}
+  .fnav{display:flex;justify-content:center;gap:22px;margin-bottom:6px;font-weight:800}.fnav a{text-decoration:underline;text-underline-offset:4px}
+.foot{font-size:1rem}
+}
+
+/* no-JS / reduced motion: just stack the panels */
+.ride:not(.h) .cam{position:static;height:auto;overflow:visible}
+.ride:not(.h) .track{position:static;flex-direction:column;transform:none!important}
+.ride:not(.h) .panel{width:100%;height:100svh;min-height:620px}
+.ride:not(.h) .q,.ride:not(.h) .a{opacity:1;transform:none}
+
+/* ---------- the end: a wall that stops the scroll ---------- */
+.end{position:relative;text-align:center;padding:12svh 22px 0;background:var(--paper)}
+.end h2{font-size:clamp(4rem,20vw,8rem);line-height:1}
+.end p{font-size:1.2rem;color:var(--ink-2);margin:10px auto 0;max-width:24ch}
+.end img{width:100%;max-width:1100px;margin:28px auto 0;mix-blend-mode:multiply;filter:brightness(1.06)}
+.foot{padding:18px 22px calc(26px + env(safe-area-inset-bottom));text-align:center;font:600 .9rem/1.7 var(--ui);color:var(--ink-2);background:var(--sand)}
+
+/* ---------- the ticket sheet ---------- */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;width:100%;margin:auto auto 0}
+dialog::backdrop{background:rgba(51,38,27,.45)}
+.sheet{width:min(100%,520px);margin:0 auto;background:var(--card);border-radius:28px 28px 0 0;padding:14px 22px calc(24px + env(safe-area-inset-bottom));position:relative}
+@media (min-width:760px){dialog{margin:auto} .sheet{border-radius:28px;padding-bottom:26px}}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--paper-2);margin:0 auto 10px}
+.x{position:absolute;top:12px;left:14px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2)}
+.x svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.6;fill:none;stroke-linecap:round}
+.ticket{border:2.5px dashed var(--sand-2);border-radius:20px;padding:18px 18px 20px;position:relative}
+.ticket::before,.ticket::after{content:"";position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:var(--card);border:2.5px dashed var(--sand-2);transform:translateY(-50%)}
+.ticket::before{right:-13px} .ticket::after{left:-13px}
+.ticket h3{font:800 1.5rem/1.3 var(--ui)}
+.ticket .sub{color:var(--ink-2);font-size:.98rem;margin-top:2px}
+.field{display:flex;direction:ltr;align-items:center;margin-top:16px;background:#fff;border:2.5px solid var(--ink);border-radius:16px;min-height:60px;box-shadow:0 4px 0 var(--ink)}
+.field.bad{border-color:var(--clay-deep);box-shadow:0 4px 0 var(--clay-deep)}
+.field span{padding:0 4px 0 16px;font:800 1.45rem/1 var(--ui);color:var(--olive)}
+.field input{flex:1;min-width:0;border:0;background:transparent;font:600 1.2rem/1.2 var(--ui);padding:14px 14px 14px 0;color:var(--ink);outline:0}
+.field input::placeholder{color:#B5A88E}
+.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}
+.full{width:100%}
+.msg{min-height:1.5em;margin-top:10px;font-size:.95rem;color:var(--clay-deep)}
+.note{display:flex;gap:8px;align-items:flex-start;font:600 .88rem/1.6 var(--ui);color:var(--ink-2);margin-top:6px}
+.note svg{width:18px;height:18px;flex:none;margin-top:3px;stroke:var(--olive);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.demo{margin-top:10px;font-size:.85rem;color:var(--ink-2);background:var(--paper);padding:8px 12px;border-radius:12px}
+
+.breath{text-align:center;padding:10px 0 6px}
+.ring{width:190px;height:190px;margin:8px auto 0;display:grid;place-items:center}
+.ring i{width:190px;height:190px;border-radius:50%;background:var(--olive);transform:scale(.45);transition:transform 5s ease-in-out}
+.ring i.in{transform:scale(1)}
+.breath h3{font:800 1.6rem/1.3 var(--ui);margin-top:12px}
+.breath p{color:var(--ink-2);font-size:.98rem}
+.breath .later{margin-top:12px;font:800 .95rem/1 var(--ui);color:var(--ink-2);text-decoration:underline;text-underline-offset:4px;visibility:hidden}
+.breath .later.show{visibility:visible}
+
+.got-t{text-align:center}
+.stamp{display:inline-block;margin-top:6px;border:3px solid var(--clay);color:var(--clay);border-radius:10px;padding:2px 18px 6px;font:400 2.4rem/1.2 var(--display);transform:rotate(-6deg)}
+.got-t .h{direction:ltr;font:800 1.5rem/1.3 var(--ui);margin-top:10px}
+.got-t p{color:var(--ink-2);margin-top:6px;font-size:1rem}
+.calmbtn{background:var(--olive);box-shadow:0 6px 0 var(--olive-deep)}
+.row{display:grid;gap:12px;margin-top:6px}
+.cta svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+[hidden]{display:none!important}
+
+/* video */
+#vid .sheet{padding-top:52px;background:var(--ink)}
+#vid video{width:100%;max-height:72svh;border-radius:16px;background:#000}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="/" aria-label="ثبات، الرئيسية"><img src="/assets/icons/icon-96.png" alt="" width="36" height="36"><b>ثبات</b></a>
+  <div class="bricks" id="bricks" aria-hidden="true"></div>
+  <a class="skip" href="#spot" id="skip">مكاني ←</a>
+</header>
+
+<main>
+<section class="ride" id="ride" aria-label="طابور ثبات">
+  <div class="cam" id="cam">
+    <div class="track" id="track">
+
+      <!-- 0: title -->
+      <div class="panel" data-i="0">
+        <div class="title">
+          <div class="day-only">
+            <span class="k">قائمة انتظار ثبات · نبدأ بأندرويد</span>
+            <h1 class="d">الطابور<br><em>بدأ</em></h1>
+            <p>وفيه مكان لك في آخره. انزل ونمشي معك.</p>
+          </div>
+          <div class="late-only">
+            <span class="k">الساعة متأخرة</span>
+            <h1 class="d">صاحي<br><em>الحين</em><span style="font-family:var(--ui);font-weight:800">؟</span></h1>
+            <p>طيب. خذ نفس مع الدائرة، وبعدين انزل. الطابور ما ينام.</p>
+            <div class="calm" aria-hidden="true"></div><span aria-hidden="true">شهيق… زفير</span>
+          </div>
+        </div>
+        <div class="cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>انزل</div>
+        <div class="footprints" aria-hidden="true"></div>
+      </div>
+
+      <!-- 1: the booth -->
+      <div class="panel wide" data-i="1">
+        <div class="talk">
+          <div class="q">هلا. هذا شباك ثبات.</div>
+          <div class="a"><small>أبو غرير من الشباك:</small>ثبات يحجب <b>المواقع والتطبيقات الإباحية</b> من جوالك، ويبني معك جدار: <b>طوبة عن كل يوم</b>.
+            <br><button class="play" type="button" id="playBtn"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>شوف حكايتي</button></div>
+        </div>
+        <img class="fig booth" src="/assets/q/booth.jpg" alt="أبو غرير، غرير بجاكيت زيتي، داخل كشك تذاكر من الطوب">
+      </div>
+
+      <!-- 2 -->
+      <div class="panel" data-i="2">
+        <div class="talk">
+          <div class="q">ولو حاولت أفتحها بالليل؟</div>
+          <div class="a"><small>أبو غرير من الشباك:</small>يطلع لك <b>الباب مغلق</b>. وتحته تمرين تنفّس <b>٩٠ ثانية</b> يمرّ بك مع الموجة.</div>
+        </div>
+        <img class="fig" src="/assets/q/p1-phone.jpg" alt="شاب ماسك جواله وطوبته">
+      </div>
+
+      <!-- 3 -->
+      <div class="panel" data-i="3">
+        <div class="talk">
+          <div class="q">ولو بغيت أفك الحماية؟</div>
+          <div class="a"><small>أبو غرير من الشباك:</small>تقدر تخففها، بس طلبك <b>ينتظر ٢٤ ساعة</b>. عشان تقرر وأنت هادي، مو وأنت مندفع.</div>
+        </div>
+        <img class="fig" src="/assets/q/p2-old.jpg" alt="شايب بثوب وغترة ماسك طوبته">
+      </div>
+
+      <!-- 4 -->
+      <div class="panel" data-i="4">
+        <div class="talk">
+          <div class="q">وكل يوم وش يصير؟</div>
+          <div class="a"><small>أبو غرير من الشباك:</small>تنحط <b>طوبة</b> في جدارك، وتوصلك <b>معلومة وحدة</b> هادية. والأيام تنحسب من الوقت الحقيقي، ما تتغير لو لعبت بساعة الجوال.</div>
+        </div>
+        <img class="fig flip" src="/assets/q/p3-yawn.jpg" alt="رجال يتثاوب ماسك طوبته">
+      </div>
+
+      <!-- 5 -->
+      <div class="panel" data-i="5">
+        <div class="talk">
+          <div class="q">يعني بعد ٩٠ يوم أرتاح منها؟</div>
+          <div class="a"><small>أبو غرير من الشباك:</small><b>ما نوعدك بهذا.</b> ٩٠ يوم علامة على الطريق، مو نهايته. وثبات أداة، مو علاج. ولو تحتاج مختص، لا تتردد.</div>
+        </div>
+        <img class="fig" src="/assets/q/p4-student.jpg" alt="طالب بشنطة ظهر يطالع طوبته">
+      </div>
+
+      <!-- 6 -->
+      <div class="panel" data-i="6">
+        <div class="talk">
+          <div class="q">طيب متى ينزل؟</div>
+          <div class="a"><small>أبو غرير من الشباك:</small>ما فيه تاريخ للحين. <b>نبدأ بأندرويد</b>، ونراسلك على إنستغرام أول ما يجهز. ما نبي إيميل ولا رقم.</div>
+        </div>
+        <img class="fig" src="/assets/q/p5-pajama.jpg" alt="شاب نعسان ببجامة حاضن طوبته">
+      </div>
+
+      <!-- 7: your spot -->
+      <div class="panel wide spot" data-i="7" id="spot">
+        <div class="title">
+          <h2 class="d" id="spotH">مكانك <em>فاضي</em></h2>
+          <p class="wait">وطوبتك على الأرض تنتظرك.</p>
+          <p class="got">هذا أنت. طوبتك محجوزة.</p>
+          <button class="cta" type="button" id="open">احجز طوبتي</button>
+        </div>
+        <img class="spotimg" src="/assets/q/spot.jpg" alt="مكان فاضي في آخر الطابور: آثار أقدام وطوبة على الأرض">
+        <img class="fig you" id="youImg" src="/assets/q/you.jpg" alt="أنت، واقف في الطابور ماسك طوبتك">
+        <span class="youtag" id="youTag"></span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="end" aria-label="النهاية">
+  <h2 class="d">خلصت<em>.</em></h2>
+  <p>ما فيه شي ثاني تقلبه. سكّر الجوال، ونام.</p>
+  <img src="/assets/q/endwall.jpg" alt="جدار طوب يكبر، وفوق أعلى طوبة نبتة صغيرة" loading="lazy">
+</section>
+</main>
+
+<footer class="foot"><nav class="fnav" aria-label="روابط"><a href="/">الرئيسية</a><a href="/privacy">الخصوصية</a></nav>ثبات · قريباً على أندرويد · لا نعرض يوزرك لأحد ولا نشاركه<span id="igLine"></span></footer>
+
+<!-- ticket sheet -->
+<dialog id="sheet" aria-labelledby="tt">
+  <div class="sheet">
+    <div class="grab" aria-hidden="true"></div>
+    <button class="x" type="button" data-close aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+
+    <form id="form" novalidate autocomplete="off">
+      <div class="ticket">
+        <h3 id="tt">تذكرتك في الطابور</h3>
+        <p class="sub">اكتب يوزر إنستغرام، ونراسلك هناك يوم الإطلاق.</p>
+        <div class="field" id="field">
+          <span aria-hidden="true">@</span>
+          <input id="ig" name="ig" type="text" inputmode="text" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="60" placeholder="your_username" dir="ltr" aria-label="يوزر إنستغرام" aria-describedby="msg privacy">
+        </div>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+        <button class="cta full" id="go" type="submit" style="margin-top:4px">احجز طوبتي</button>
+        <p class="note" id="privacy"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>لا نعرض يوزرك لأحد ولا نشاركه. نستخدمه عشان نراسلك يوم الإطلاق فقط.</span></p>
+        <p class="demo" id="demo" hidden>وضع تجريبي: ما انحفظ شي لأن ربط الإرسال ما تم.</p>
+      </div>
+    </form>
+
+    <div class="breath" id="breath" hidden aria-live="polite">
+      <div class="ring" aria-hidden="true"><i id="ringDot"></i></div>
+      <h3 id="bLabel">شهيق…</h3>
+      <p>عشر ثواني بس، وتذكرتك تنطبع. هذا نفس اللي يسويه ثبات معك وقت الرغبة.</p>
+      <button class="later" type="button" id="bSkip">تخطّى</button>
+    </div>
+
+    <div class="got-t" id="done" hidden>
+      <div class="stamp">محجوز</div>
+      <div class="h" id="doneH"></div>
+      <p>طوبتك محجوزة. نراسلك على إنستغرام يوم الإطلاق.</p>
+      <div class="row" style="margin-top:16px">
+        <button class="cta full" id="dl" type="button"><svg viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg>حمّل تذكرتي</button>
+        <button class="cta full calmbtn" id="share" type="button" hidden>شارك</button>
+        <button class="cta full calmbtn" type="button" data-close>شوف مكانك في الطابور</button>
+      </div>
+      <p class="demo" id="demo2" hidden>وضع تجريبي: ما انحفظ شي لأن ربط الإرسال ما تم.</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="vid" aria-label="حكاية أبو غرير">
+  <div class="sheet">
+    <button class="x" type="button" data-close aria-label="إغلاق" style="color:#fff"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <video id="video" controls playsinline preload="none" poster="/assets/wl-story.jpg" src="/assets/wl-story.mp4"></video>
+  </div>
+</dialog>
+
+<noscript><p style="padding:20px;text-align:center">فعّل جافاسكربت عشان تسجّل يوزرك في قائمة الانتظار.</p></noscript>
+
+<script>
+/* ---------- settings ---------- */
+const CFG = {
+  endpoint: "/api/waitlist",  // relay that forwards {handle, platform, source, at} to Telegram. Never put the bot token here.
+  headers: {},
+  igAccount: "thabat.ar"               // your Instagram handle without @ (shown in footer and on the ticket card)
+};
+/* ------------------------------ */
+
+const $ = (id) => document.getElementById(id);
+const isLocal = ["localhost", "127.0.0.1", "[::1]", ""].includes(location.hostname) || location.hostname.endsWith(".localhost");
+const KEY = "thabat_waitlist_v1";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* late-night mode: 1:00–4:59 on the visitor's own clock */
+const hr = new Date().getHours();
+if (hr >= 1 && hr < 5) document.documentElement.classList.add("late");
+
+/* ---------- the ride ---------- */
+const ride = $("ride"), track = $("track"), panels = [...track.querySelectorAll(".panel")];
+const bricks = $("bricks");
+panels.forEach(() => bricks.appendChild(document.createElement("i")));
+let maxShift = 0, active = -1;
+
+function layout() {
+  if (reduce) return;
+  ride.classList.add("h");
+  maxShift = Math.max(0, track.scrollWidth - innerWidth);
+  ride.style.height = (maxShift + innerHeight) + "px";
+  tick();
+}
+function tick() {
+  let shift = 0;
+  if (ride.classList.contains("h")) {
+    shift = Math.min(maxShift, Math.max(0, scrollY - ride.offsetTop));
+    track.style.transform = `translate3d(${shift}px,0,0)`;
+  }
+  // which panel is closest to the centre of the screen
+  const mid = innerWidth / 2;
+  let best = 0, bestD = Infinity;
+  const wide = innerWidth >= 900;
+  const rects = panels.map((p) => p.getBoundingClientRect());
+  rects.forEach((r, i) => { const d = Math.abs(r.left + r.width / 2 - mid); if (d < bestD) { bestD = d; best = i; } });
+  panels.forEach((p, i) => {
+    const r = rects[i];
+    p.classList.toggle("on", wide ? i === best : (r.right > innerWidth * 0.12 && r.left < innerWidth * 0.88));
+  });
+  if (best !== active) {
+    active = best;
+    [...bricks.children].forEach((b, i) => b.classList.toggle("on", i <= best));
+  }
+  $("skip").hidden = best === panels.length - 1;
+}
+let raf = 0;
+addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; tick(); }); }, { passive: true });
+addEventListener("resize", layout);
+addEventListener("load", layout);
+layout();
+if (reduce) panels.forEach((p) => p.classList.add("on"));
+
+function goToSpot(e) {
+  if (e) e.preventDefault();
+  const y = ride.classList.contains("h") ? ride.offsetTop + maxShift : $("spot").offsetTop;
+  scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+}
+$("skip").addEventListener("click", goToSpot);
+
+/* ---------- dialogs ---------- */
+const sheet = $("sheet"), vid = $("vid");
+document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
+[sheet, vid].forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) d.close(); }));
+vid.addEventListener("close", () => $("video").pause());
+fetch("/assets/wl-story.mp4", { method: "HEAD" }).then((r) => { if (!r.ok) $("playBtn").hidden = true; }).catch(() => { $("playBtn").hidden = true; });
+$("playBtn").addEventListener("click", () => { vid.showModal(); $("video").play().catch(() => {}); });
+$("open").addEventListener("click", () => {
+  sheet.showModal();
+  if (!$("form").hidden) setTimeout(() => $("ig").focus(), 250);
+});
+
+/* ---------- handle helpers ---------- */
+function clean(v) {
+  v = String(v || "").trim();
+  const m = v.match(/instagram\.com\/([A-Za-z0-9._]+)/i);
+  if (m) v = m[1];
+  return v.replace(/^@+/, "").replace(/[\s/]+$/, "").toLowerCase();
+}
+function valid(h) { return /^[a-z0-9._]{1,30}$/.test(h) && !/\.\./.test(h) && !/^\./.test(h) && !/\.$/.test(h); }
+
+/* ---------- form ---------- */
+const form = $("form"), input = $("ig"), msg = $("msg"), field = $("field");
+input.addEventListener("input", () => { field.classList.remove("bad"); msg.textContent = ""; });
+
+async function send(handle) {
+  if (!CFG.endpoint) {
+    if (isLocal) return { demo: true };
+    throw new Error("التسجيل مو متاح الحين. جرّب بعدين.");
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+  const res = await fetch(CFG.endpoint, {
+    signal: controller.signal,
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json", ...CFG.headers },
+    body: JSON.stringify({ handle, platform: "instagram", source: "waitlist", at: new Date().toISOString(), website: form.website ? form.website.value : "" })
+  });
+  if (!res.ok) throw new Error("ما قدرنا نحفظ تسجيلك. جرّب بعد شوي.");
+  const result = await res.json();
+  if (result.ok !== true) throw new Error("ما قدرنا نحفظ تسجيلك. جرّب بعد شوي.");
+  return {};
+  } catch (err) {
+    if (err.name === "AbortError") throw new Error("الاتصال أخذ وقت طويل. جرّب التسجيل مرة ثانية.");
+    throw err;
+  } finally { clearTimeout(timeout); }
+}
+
+/* ten seconds of breathing while the request goes out */
+function breathe(signal) {
+  return new Promise((done) => {
+    const dot = $("ringDot"), label = $("bLabel"), skip = $("bSkip");
+    let t = 0, finished = false;
+    const end = () => { if (finished) return; finished = true; clearInterval(iv); clearTimeout(st); signal.removeEventListener("abort", end); done(); };
+    const phase = () => { const inhale = (t % 2) === 0; dot.classList.toggle("in", inhale); label.textContent = inhale ? "شهيق…" : "زفير…"; t++; };
+    skip.classList.remove("show");
+    phase(); const iv = setInterval(() => { if (t >= 2) return end(); phase(); }, 5000);
+    const st = setTimeout(() => skip.classList.add("show"), 3000);
+    skip.onclick = end;
+    signal.addEventListener("abort", end, { once: true });
+    if (reduce) end();
+  });
+}
+
+function placeYou(handle) {
+  document.body.classList.add("mine");
+  const img = $("youImg"), tag = $("youTag");
+  tag.textContent = "@" + handle;
+  const put = () => {
+    // the blank tag sits at about 59–72% across and 50–69% down the picture
+    const w = img.clientWidth, h = img.clientHeight;
+    if (!w) return;
+    // the image is centred with translateX(-50%), so its real left edge is offsetLeft - w/2
+    tag.style.left = (img.offsetLeft - w / 2 + w * 0.655) + "px";
+    tag.style.top = (img.offsetTop + h * 0.595) + "px";
+    let s = Math.round(h * 0.034); tag.style.fontSize = s + "px";
+    while (tag.offsetWidth > h * 0.17 && s > 7) { s--; tag.style.fontSize = s + "px"; }
+  };
+  if (img.complete) put(); else img.addEventListener("load", put, { once: true });
+  addEventListener("resize", put);
+}
+
+function finish(handle, demo) {
+  try { localStorage.setItem(KEY, JSON.stringify({ handle, at: Date.now() })); } catch (e) {}
+  form.hidden = true; $("breath").hidden = true; $("done").hidden = false;
+  $("doneH").textContent = "@" + handle;
+  $("demo2").hidden = !demo;
+  if (navigator.canShare) $("share").hidden = false;
+  window.__handle = handle;
+  $("open").textContent = "تذكرتي";
+  $("spotH").innerHTML = "مكانك <em>محجوز</em>";
+  placeYou(handle);
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (form.website && form.website.value) return;   // honeypot
+  const h = clean(input.value);
+  if (!valid(h)) {
+    field.classList.add("bad");
+    msg.textContent = "اكتب اليوزر بالحروف الإنجليزية والأرقام والنقطة والشرطة السفلية بس (لين ٣٠ حرف).";
+    input.focus(); return;
+  }
+  input.blur();
+  form.hidden = true; $("breath").hidden = false;
+  const breathing = new AbortController();
+  try {
+    const [r] = await Promise.all([send(h), breathe(breathing.signal)]);
+    finish(h, !!r.demo);
+  } catch (err) {
+    $("breath").hidden = true; form.hidden = false;
+    msg.textContent = err.message || "صار خطأ. جرّب مرة ثانية.";
+  } finally { breathing.abort(); }
+});
+
+/* returning visitor */
+try {
+  const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+  if (saved && saved.handle) finish(saved.handle, false);
+} catch (e) {}
+
+/* ---------- ticket card (drawn on the visitor's device, nothing is uploaded) ---------- */
+const load = (src) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+async function makeCard(handle) {
+  await Promise.all([document.fonts.load('400 120px "Badeen Display"'), document.fonts.load('800 60px "Baloo Bhaijaan 2"')]);
+  const [you, logo] = await Promise.all([load("/assets/q/you.jpg"), load("/assets/icons/icon-256.png").catch(() => null)]);
+  const W = 1080, H = 1920, c = document.createElement("canvas"); c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  x.fillStyle = "#F4EAD5"; x.fillRect(0, 0, W, H);
+  x.fillStyle = "#E6D2A8"; x.fillRect(0, 1560, W, 360);
+
+  x.direction = "rtl"; x.textAlign = "center";
+  if (logo) { x.save(); x.beginPath(); x.roundRect(W / 2 - 46, 150, 92, 92, 24); x.clip(); x.drawImage(logo, W / 2 - 46, 150, 92, 92); x.restore(); }
+  x.fillStyle = "#33261B"; x.font = '400 150px "Badeen Display"'; x.fillText("حجزت طوبتي", W / 2, 440);
+  x.fillStyle = "#C85A2E"; x.font = '800 74px "Baloo Bhaijaan 2"'; x.fillText("في طابور ثبات", W / 2, 560);
+
+  // the hooded figure, white paper melted into the background
+  const fh = 1000, fw = fh * you.width / you.height, fx = (W - fw) / 2, fy = 1640 - fh;
+  x.filter = "brightness(1.1) contrast(1.05)"; x.globalCompositeOperation = "multiply";
+  x.drawImage(you, fx, fy, fw, fh);
+  x.globalCompositeOperation = "source-over"; x.filter = "none";
+  // handle on the blank tag
+  x.save(); x.translate(fx + fw * 0.655, fy + fh * 0.595); x.rotate(-Math.PI / 2);
+  x.direction = "ltr"; x.textAlign = "center"; x.textBaseline = "middle"; x.fillStyle = "#3F4F2A";
+  let s = 46; const label = "@" + handle;
+  do { x.font = `800 ${s}px "Baloo Bhaijaan 2"`; s -= 2; } while (x.measureText(label).width > fh * 0.17 && s > 14);
+  x.fillText(label, 0, 0); x.restore();
+
+  x.direction = "rtl"; x.textAlign = "center"; x.textBaseline = "alphabetic";
+  x.fillStyle = "#33261B"; x.font = '800 52px "Baloo Bhaijaan 2"'; x.fillText("قائمة الانتظار مفتوحة · قريباً", W / 2, 1760);
+  if (CFG.igAccount) { x.fillStyle = "#6B5240"; x.font = '800 44px "Baloo Bhaijaan 2"'; x.direction = "ltr"; x.fillText("@" + CFG.igAccount, W / 2, 1830); }
+  return new Promise((ok) => c.toBlob(ok, "image/png"));
+}
+$("dl").addEventListener("click", async () => {
+  const b = await makeCard(window.__handle);
+  const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "thabat-my-brick.png"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+});
+$("share").addEventListener("click", async () => {
+  const b = await makeCard(window.__handle);
+  const f = new File([b], "thabat-my-brick.png", { type: "image/png" });
+  if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: "طوبتي في ثبات" }); } catch (e) {} }
+});
+
+/* ---------- small things ---------- */
+$("demo").hidden = !(isLocal && !CFG.endpoint);
+if (CFG.igAccount) $("igLine").innerHTML = ' · تابعنا <a href="https://instagram.com/' + CFG.igAccount + '" dir="ltr">@' + CFG.igAccount + "</a>";
+</script>
+</body>
+</html>

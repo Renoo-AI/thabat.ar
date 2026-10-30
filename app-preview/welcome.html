@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — لماذا تريد أن تتوقف؟</title>
+<meta name="description" content="ثبات يحجب المواقع والتطبيقات الإباحية ويبني معك جداراً يوماً بعد يوم. ابدأ بسببك.">
+<meta property="og:title" content="ثبات">
+<meta property="og:description" content="جدار يُبنى يوماً بعد يوم، وباب يُغلق في وجه الإباحية.">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="screen">
+  <header class="bar" data-langs><span class="mark">ثبات</span></header>
+
+  <img class="hero" src="assets/door-open.jpg" alt="باب طيني برتقالي وأخضر مفتوح قليلاً يخرج منه ضوء دافئ" width="900" height="900">
+
+  <h1 data-t>لماذا تريد أن <em>تتوقف؟</em></h1>
+
+  <form id="f">
+    <fieldset class="choices">
+      <legend class="small" style="padding:0;margin-bottom:6px">اختر سبباً واحداً. سنذكّرك به حين تحتاج إليه.</legend>
+      <div class="choice"><input type="radio" name="r" id="r1" value="family" checked><label for="r1"><img class="thumb" src="assets/r-family.jpg" alt="" width="52" height="52"><b>أسرتي</b></label></div>
+      <div class="choice"><input type="radio" name="r" id="r2" value="faith"><label for="r2"><img class="thumb" src="assets/r-faith.jpg" alt="" width="52" height="52"><b>ديني</b></label></div>
+      <div class="choice"><input type="radio" name="r" id="r3" value="self"><label for="r3"><img class="thumb" src="assets/r-self.jpg" alt="" width="52" height="52"><b>نفسي</b></label></div>
+    </fieldset>
+    <div class="spacer"></div>
+    <button class="cta" type="submit" style="margin-top:20px">هذا سببي <i data-i="arrow"></i></button>
+  </form>
+</main>
+<script>
+document.getElementById("f").addEventListener("submit", (e) => {
+  e.preventDefault();
+  store.set({ reason: new FormData(e.target).get("r") });
+  location.href = "level.html";
+});
+</script>
+</body>
+</html>

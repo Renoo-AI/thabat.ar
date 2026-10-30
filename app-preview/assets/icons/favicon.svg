@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Thabat">
+  <!-- flat twin of the clay icon (glowing brick + sprout); stays sharp at 16px where a clay render turns to mush -->
+  <rect width="64" height="64" rx="15" fill="#7C9A74"/>
+  <rect x="12" y="20" width="35" height="24" rx="9" fill="#E8893F"/>
+  <rect x="17" y="24" width="20" height="9" rx="4.5" fill="#F4A45F" opacity=".75"/>
+  <path d="M44 44v-5" stroke="#F3E8D2" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M44 39c-5-.4-7.5-2.6-8-6.6 5-.1 7.6 2 8 6.6z" fill="#F3E8D2"/>
+  <path d="M44 38c.3-4.2 3-6.3 8-6.2-.5 4-3 6.1-8 6.2z" fill="#F3E8D2"/>
+</svg>

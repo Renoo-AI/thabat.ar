@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ثبات — قوة الحماية</title>
+<meta name="description" content="اختر قوة الحماية: خفيف أو متوسط أو صارم.">
+<meta property="og:title" content="ثبات — قوة الحماية">
+<meta property="og:image" content="assets/og.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F5A3B">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</head>
+<body>
+<main class="screen">
+  <header class="bar">
+    <a class="ico-btn" href="welcome.html" aria-label="رجوع"><i data-i="arrow" style="transform:scaleX(-1)"></i></a>
+    <span class="mark">ثبات</span>
+  </header>
+
+  <img class="hero sm" id="art" src="assets/lv-mid.jpg" alt="جدار طيني متين وفيه باب برتقالي صغير" width="900" height="900">
+
+  <h1 data-t>اختر <em>قوة</em> الحماية</h1>
+
+  <form id="f">
+    <fieldset class="choices">
+      <legend class="small" style="padding:0;margin-bottom:6px">تشديد الحماية فوري. أما تخفيفها فيتأخر ٢٤ ساعة، لتقرر وأنت هادئ.</legend>
+      <div class="choice"><input type="radio" name="l" id="l1" value="soft"><label for="l1"><i data-i="feather"></i><div><b>خفيف</b><span>المواقع والتطبيقات الإباحية المعروفة فقط</span></div></label></div>
+      <div class="choice"><input type="radio" name="l" id="l2" value="mid" checked><label for="l2"><i data-i="shield"></i><div><b>متوسط</b><span>المعروفة، ومعها مواقع محتواها مختلط</span></div></label></div>
+      <div class="choice"><input type="radio" name="l" id="l3" value="hard"><label for="l3"><i data-i="lock"></i><div><b>صارم</b><span>كل ما سبق، وقفل ليلي لتطبيقات التواصل من ١١ مساءً إلى ٥ صباحاً</span></div></label></div>
+    </fieldset>
+    <div class="spacer"></div>
+    <button class="cta" type="submit" style="margin-top:20px">ثبّت الحماية <i data-i="arrow"></i></button>
+  </form>
+</main>
+<script>
+const ART = { soft: ["lv-soft.jpg", T("سياج طيني منخفض وبوابة برتقالية صغيرة ونبتة")], mid: ["lv-mid.jpg", T("جدار طيني متين وفيه باب برتقالي صغير")], hard: ["lv-hard.jpg", T("باب خزنة طيني دائري ثقيل بعجلة كبيرة")] };
+const art = document.getElementById("art");
+function show() { const v = document.querySelector("input[name=l]:checked").value; art.src = "assets/" + ART[v][0]; art.alt = ART[v][1]; }
+document.querySelectorAll("input[name=l]").forEach((r) => r.addEventListener("change", show));
+document.getElementById("f").addEventListener("submit", (e) => {
+  e.preventDefault();
+  store.set({ level: new FormData(e.target).get("l") });
+  location.href = "permissions.html";
+});
+</script>
+</body>
+</html>

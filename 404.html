@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>الصفحة مو موجودة — ثبات</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F4EAD5">
+<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32.png">
+<link rel="preload" href="/assets/fonts/badeen.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Badeen Display";src:url(/assets/fonts/badeen.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Baloo Bhaijaan 2";src:url(/assets/fonts/baloo.woff2) format("woff2");font-weight:400 800;font-display:swap}
+:root{--paper:#F4EAD5;--paper-2:#EADCBF;--card:#FCF7EC;--sand:#E6D2A8;--sand-2:#D9C18F;--ink:#33261B;--ink-2:#6B5240;--clay:#C85A2E;--clay-deep:#8A3F1F;--olive:#5E7140;--olive-deep:#3F4F2A;--ui:"Baloo Bhaijaan 2",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{background:var(--paper);color:var(--ink);font:600 1.0625rem/1.7 var(--ui);min-height:100svh;display:flex;flex-direction:column}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--clay-deep);outline-offset:3px;border-radius:8px}
+.top{height:64px;display:flex;align-items:center;padding:0 16px}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none}
+.brand img{width:36px;height:36px;border-radius:10px}
+.brand b{font:800 1.35rem/1 var(--ui)}
+main{flex:1;width:min(100% - 32px,1040px);margin:0 auto;display:grid;gap:10px;align-items:center;padding:8px 0 40px}
+@media (min-width:900px){main{grid-template-columns:1.2fr .8fr;gap:40px}}
+.code{font:800 1rem/1 var(--ui);color:var(--olive);background:var(--card);display:inline-block;padding:5px 14px 7px;border-radius:99px;border:2px solid var(--paper-2);direction:ltr}
+h1{font:400 clamp(4.4rem,22vw,8.5rem)/1 "Badeen Display",var(--ui);margin-top:12px}
+h1 em{font-style:normal;color:var(--clay)}
+.lead{font-size:1.2rem;color:var(--ink-2);max-width:34ch;margin-top:12px}
+.wall{position:relative;margin-top:26px;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-width:460px}
+.wall i{aspect-ratio:2/1;border-radius:6px;background:var(--sand);box-shadow:inset 0 -4px 0 var(--sand-2)}
+.wall i:nth-child(12n+7),.wall i:nth-child(12n+8),.wall i:nth-child(12n+9),.wall i:nth-child(12n+10),.wall i:nth-child(12n+11),.wall i:nth-child(12n+12){transform:translateX(-50%)}
+.wall i:nth-child(12n+12){visibility:hidden}
+.wall i:nth-child(5n+2){background:#EFDDB6}
+.wall .hole{background:transparent;box-shadow:none;border:3px dashed var(--clay)}
+.wall .hole.full{border:0;background:var(--clay);box-shadow:inset 0 -4px 0 var(--clay-deep);animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{scale:1.3}}
+.loose{margin-top:18px;display:flex;align-items:center;gap:12px;font:800 1rem/1.3 var(--ui);color:var(--ink-2);touch-action:none}
+.loose .b{width:88px;height:44px;border-radius:6px;background:var(--clay);box-shadow:inset 0 -5px 0 var(--clay-deep),0 6px 0 rgba(51,38,27,.18);transform:rotate(-10deg);cursor:grab;transition:transform .15s}
+.loose .b:hover{transform:rotate(-4deg) translateY(-3px)}
+.loose .b.drag{cursor:grabbing;position:fixed;z-index:9;transition:none;transform:rotate(0)}
+.done{display:none;margin-top:22px}
+.ok .done{display:block}
+.ok .loose{display:none}
+.done p{font:800 1.25rem/1.4 var(--ui)}
+.acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 28px 4px;border-radius:999px;background:var(--clay);color:var(--card);font:800 1.15rem/1 var(--ui);box-shadow:0 6px 0 var(--clay-deep);text-decoration:none}
+.cta.alt{background:var(--olive);box-shadow:0 6px 0 var(--olive-deep)}
+.skip{display:block;width:max-content;margin-top:14px;font-size:.95rem;color:var(--ink-2)}
+.ok .skip{display:none}
+figure img{width:100%;height:auto;max-width:360px;margin-inline:auto;display:block;mix-blend-mode:multiply;filter:brightness(1.1) contrast(1.05)}
+@media (max-width:899px){figure{order:-1}figure img{max-width:150px;margin-inline:0 auto}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="/" aria-label="ثبات، الرئيسية"><img src="/assets/icons/icon-96.png" alt="" width="36" height="36"><b>ثبات</b></a></header>
+<main id="m">
+  <div>
+    <span class="code">404</span>
+    <h1>ضعت<em>؟</em></h1>
+    <p class="lead">الصفحة اللي تدوّرها مو موجودة. بس فيه طوبة طايحة. رجّعها مكانها في الجدار.</p>
+    <div class="wall" id="wall" aria-hidden="true"></div>
+    <div class="loose">
+      <button class="b" id="brick" type="button" aria-label="رجّع الطوبة مكانها"></button>
+      <span>اسحبها للفراغ، أو اضغط عليها.</span>
+    </div>
+    <div class="done" role="status">
+      <p>تمام. الجدار رجع كامل.</p>
+      <div class="acts"><a class="cta" href="/">الرئيسية</a><a class="cta alt" href="/waitlist">الطابور</a></div>
+    </div>
+    <a class="skip" href="/">أو ارجع للرئيسية على طول</a>
+  </div>
+  <figure><img src="/assets/home/badger-lost.jpg" width="896" height="1200" alt="أبو غرير حاضن طوبة ويحك راسه، يدوّر وين مكانها"></figure>
+</main>
+<script>
+const wall = document.getElementById("wall"), brick = document.getElementById("brick"), m = document.getElementById("m");
+const HOLE = 15;
+for (let i = 0; i < 24; i++) { const b = document.createElement("i"); if (i === HOLE) b.className = "hole"; wall.appendChild(b); }
+const hole = wall.children[HOLE];
+function place() { hole.classList.add("full"); m.classList.add("ok"); }
+brick.addEventListener("click", place);
+// drag on touch and mouse
+let sx = 0, sy = 0, moved = false;
+brick.addEventListener("pointerdown", (e) => {
+  moved = false; sx = e.clientX; sy = e.clientY; brick.setPointerCapture(e.pointerId);
+});
+brick.addEventListener("pointermove", (e) => {
+  if (!brick.hasPointerCapture(e.pointerId)) return;
+  if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 6) return;
+  moved = true; brick.classList.add("drag");
+  brick.style.left = (e.clientX - 44) + "px"; brick.style.top = (e.clientY - 22) + "px";
+});
+brick.addEventListener("pointerup", (e) => {
+  if (!moved) return;
+  const r = hole.getBoundingClientRect();
+  brick.classList.remove("drag"); brick.style.left = brick.style.top = "";
+  const near = e.clientX > r.left - 40 && e.clientX < r.right + 40 && e.clientY > r.top - 40 && e.clientY < r.bottom + 40;
+  if (near) place();
+  // a real drag should not also fire the click
+  brick.addEventListener("click", (ev) => ev.stopImmediatePropagation(), { once: true, capture: true });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "ثبات — Thabat",
+  "short_name": "ثبات",
+  "description": "يحجب المواقع والتطبيقات الإباحية ويبني معك جداراً يوماً بعد يوم. / Blocks porn sites and apps and builds a wall with you, one day at a time.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "home.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDE1CB",
+  "theme_color": "#3F5A3B",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/icons/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "تنفّس ٩٠ ثانية / Breathe 90 s", "url": "urge.html", "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96" }] },
+    { "name": "معلومة اليوم / Today's tip", "url": "learn.html", "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96" }] }
+  ]
+}
